@@ -9,13 +9,6 @@
 
 (def valid-dirctions ["NORTH" "SOUTH" "EAST" "WEST"])
 
-(def initial-robot-state 
-  {
-   :row -1
-   :col -1
-   :direction "NORTH" 
-   })
-
 (def board [
   {:row 0 :col 0} {:row 0 :col 1} {:row 0 :col 2} {:row 0 :col 3} {:row 0 :col 4}
   {:row 1 :col 0} {:row 1 :col 1} {:row 1 :col 2} {:row 1 :col 3} {:row 1 :col 4}
@@ -96,28 +89,46 @@
 
 (defn prompt
   []
-  (println "Place a command \n")
+  (println "Place a command")
   (let [command (user-input)]
     command))
 
 (defn invalid-msg
-  []
+  [robot-state]
   (print "Invalid command, please try valid commands \n")
-  (start))
+  (start robot-state))
 
-(defn process-command
-  [command args]
-  (println command)
-  (println args)
-  (start)
+
+(def initial-robot-state { :row -1 :col -1 :direction "" })
+
+(defn place-robot 
+  [robot-state row col direction]
+  (-> robot-state
+      (assoc-in [:row] row)
+      (assoc-in [:col] col)
+      (assoc-in [:direction] direction)
+      ))
+
+
+(defn process-commands
+  [robot-state command row col direction]
+  (case command
+    "PLACE" (place-robot robot-state row col direction)
+    )
+)
+(defn valid-command-processing
+  [command robot-state [row col direction]]
+  (def new-robot-state (process-commands robot-state command row col direction))
+  (start new-robot-state)
 )
 
 (defn start
-  []
+  [robot-state]
+  (println robot-state)
   (let [[command & args]  (valid-command (prompt))]
     (if (= nil command)
-      (invalid-msg)
-      (process-command command args)
+      (invalid-msg robot-state)
+      (valid-command-processing command robot-state args)
       )))
 
 
@@ -125,4 +136,4 @@
 (defn -main
   "start of program"
   [& args]
-  (start))
+  (start initial-robot-state))
