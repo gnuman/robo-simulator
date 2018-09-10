@@ -109,11 +109,20 @@
       (assoc-in [:direction] direction)
       ))
 
+(defn report-robot-state
+  [robot-state]
+  (let [{row :row col :col direction :direction} robot-state]
+    (if (= -1 row)
+      (println "Place a command first")
+      (println row,col,direction)
+      ))
+  robot-state)
 
 (defn process-commands
   [robot-state command row col direction]
   (case command
     "PLACE" (place-robot robot-state row col direction)
+    "REPORT" (report-robot-state robot-state)
     )
 )
 (defn valid-command-processing
@@ -124,7 +133,6 @@
 
 (defn start
   [robot-state]
-  (println robot-state)
   (let [[command & args]  (valid-command (prompt))]
     (if (= nil command)
       (invalid-msg robot-state)
