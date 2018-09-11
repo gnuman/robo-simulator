@@ -172,10 +172,13 @@
 
 (defn change-robot-position 
   [robot-state]
-  (println "************** change robot pos")
-  (println robot-state)
-  robot-state
-  )
+  (let [{row :row col :col direction :direction} robot-state]
+    (case direction
+      "NORTH" (update-in robot-state [:row] inc)
+      "SOUTH" (update-in robot-state [:row] dec)
+      "EAST" (update-in robot-state [:col] inc)
+      "WEST" (update-in robot-state [:col] dec)
+    )))
 
 (defn move-robot
   [robot-state]
