@@ -126,28 +126,28 @@
 
 (defn west-corner-side-rule
   [col direction]
-  (if (and (= col west-side-col) (= direction "WEST"))
+  (if (and (= col west-side-col) (= direction "SOUTH"))
     false
     true
     ))
 
 (defn south-corner-side-rule
   [row direction]
-  (if (and (= row south-side-row) (= direction "SOUTH"))
+  (if (and (= row south-side-row) (= direction "EAST"))
     false
     true
     ))
 
 (defn north-corner-side-rule
   [row direction]
-  (if (and (= row north-side-row) (= direction "NORTH"))
+  (if (and (= row north-side-row) (= direction "WEST"))
     false
     true
     ))
 
 (defn east-corner-side-rule
   [col direction]
-  (if (and (= col east-side-col) (= direction "EAST"))
+  (if (and (= col east-side-col) (= direction "NORTH"))
     false
     true
     ))
@@ -174,10 +174,10 @@
   [robot-state]
   (let [{row :row col :col direction :direction} robot-state]
     (case direction
-      "NORTH" (update-in robot-state [:row] inc)
-      "SOUTH" (update-in robot-state [:row] dec)
-      "EAST" (update-in robot-state [:col] inc)
-      "WEST" (update-in robot-state [:col] dec)
+      "NORTH" (update-in robot-state [:col] inc)
+      "SOUTH" (update-in robot-state [:col] dec)
+      "EAST" (update-in robot-state [:row] inc)
+      "WEST" (update-in robot-state [:row] dec)
     )))
 
 (defn move-robot
