@@ -56,23 +56,22 @@
 (defn check-place-args
   "Convert row, col of string into int and check they are into board"
   [row col direction]
-  (def int-row (convert-str-to-int row))
-  (def int-col (convert-str-to-int col))
-  (def in-valid-cordinates (row-col-not-exists-in-board int-row int-col))
-  (if (or (= nil int-row) (= nil int-col) (= nil (in? valid-dirctions direction)) (= true in-valid-cordinates))
-    nil
-    [row col direction]
-    ))
-
+  (let [int-row (convert-str-to-int row) 
+        int-col (convert-str-to-int col)]
+    (def in-valid-cordinates (row-col-not-exists-in-board int-row int-col))
+    (if (or (= nil int-row) (= nil int-col) (= nil (in? valid-dirctions direction)) (= true in-valid-cordinates))
+      nil
+      [int-row int-col direction] 
+    )))
 
 (defn valid-place-args
   [place-command place-args]
   (let [[row col direction] 
         (seperate-place-args place-args)]
-    (if (= nil (check-place-args row col direction))
-      nil
-      [place-command row col direction]
-      )))
+    (let [[int-row int-col direction] (check-place-args row col direction)] 
+      (if (= nil int-row)
+        nil
+        [place-command int-row int-col direction]))))
 
 (defn valid-place-command
   [place-command place-args]
@@ -113,16 +112,85 @@
   [robot-state]
   (let [{row :row col :col direction :direction} robot-state]
     (if (= -1 row)
-      (println "Place a command first")
+      (println "Place robot first")
       (println row,col,direction)
       ))
   robot-state)
+
+
+(def board-dimensions {:rows 4 :cols 4})
+(def west-side-col 0)
+(def east-side-col (get board-dimensions :cols))
+(def south-side-row 0)
+(def north-side-row (get board-dimensions :rows))
+
+(defn west-corner-side-rule
+  [col direction]
+  (if (and (= col west-side-col) (= direction "WEST"))
+    false
+    true
+    ))
+
+(defn south-corner-side-rule
+  [row direction]
+  (if (and (= row south-side-row) (= direction "SOUTH"))
+    false
+    true
+    ))
+
+(defn north-corner-side-rule
+  [row direction]
+  (if (and (= row north-side-row) (= direction "NORTH"))
+    false
+    true
+    ))
+
+(defn east-corner-side-rule
+  [col direction]
+  (if (and (= col east-side-col) (= direction "EAST"))
+    false
+    true
+    ))
+
+(defn can-robot-move?
+  [robot-state]
+  (let [{row :row col :col direction :direction} robot-state]
+    (if (or 
+         (= false (west-corner-side-rule col direction)) 
+         (= false (south-corner-side-rule row direction)) 
+         (= false (north-corner-side-rule row direction)) 
+         (= false (east-corner-side-rule col direction)))
+      false
+      true)))
+
+(defn is-robot-on-table?
+  [robot-state]
+  (let [{row :row col :col direction :direction} robot-state]
+    (if (= -1 row)
+      false
+      true)))
+
+(defn change-robot-position 
+  [robot-state]
+  (println "************** change robot pos")
+  (println robot-state)
+  robot-state
+  )
+
+(defn move-robot
+  [robot-state]
+  (if (and 
+       (is-robot-on-table? robot-state) 
+       (can-robot-move? robot-state))
+    (change-robot-position robot-state)
+    robot-state))
 
 (defn process-commands
   [robot-state command row col direction]
   (case command
     "PLACE" (place-robot robot-state row col direction)
     "REPORT" (report-robot-state robot-state)
+    "MOVE" (move-robot robot-state)
     )
 )
 (defn valid-command-processing
