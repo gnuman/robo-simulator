@@ -133,14 +133,14 @@
 
 (defn south-corner-side-rule
   [row direction]
-  (if (and (= row south-side-row) (= direction "EAST"))
+  (if (and (= row south-side-row) (= direction "WEST"))
     false
     true
     ))
 
 (defn north-corner-side-rule
   [row direction]
-  (if (and (= row north-side-row) (= direction "WEST"))
+  (if (and (= row north-side-row) (= direction "EAST"))
     false
     true
     ))
