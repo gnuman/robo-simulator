@@ -188,19 +188,40 @@
     (change-robot-position robot-state)
     robot-state))
 
+(defn change-direction-to-left
+  [robot-state]
+  (let [{row :row col :col direction :direction} robot-state]
+    (case direction
+      "NORTH" (assoc-in robot-state [:direction] "WEST")
+      "SOUTH" (assoc-in robot-state [:direction] "EAST")
+      "EAST" (assoc-in robot-state [:direction] "NORTH")
+      "WEST" (assoc-in robot-state [:direction] "SOUTH")
+    )))
+
+(defn change-direction-to-right
+  [robot-state]
+  (let [{row :row col :col direction :direction} robot-state]
+    (case direction
+      "NORTH" (assoc-in robot-state [:direction] "EAST")
+      "SOUTH" (assoc-in robot-state [:direction] "WEST")
+      "EAST" (assoc-in robot-state [:direction] "SOUTH")
+      "WEST" (assoc-in robot-state [:direction] "NORTH")
+    )))
+
 (defn process-commands
   [robot-state command row col direction]
   (case command
     "PLACE" (place-robot robot-state row col direction)
     "REPORT" (report-robot-state robot-state)
     "MOVE" (move-robot robot-state)
-    )
-)
+    "LEFT" (change-direction-to-left robot-state)
+    "RIGHT" (change-direction-to-right robot-state)
+    ))
+
 (defn valid-command-processing
   [command robot-state [row col direction]]
   (def new-robot-state (process-commands robot-state command row col direction))
-  (start new-robot-state)
-)
+  (start new-robot-state))
 
 (defn start
   [robot-state]
@@ -209,8 +230,6 @@
       (invalid-msg robot-state)
       (valid-command-processing command robot-state args)
       )))
-
-
 
 (defn -main
   "start of program"
