@@ -24,3 +24,33 @@
   (testing "North corner"
     (is (= false (north-corner-side-rule 4 "NORTH")))
     ))
+
+;; Tests to change robot state
+
+(deftest move-robot-east-direction
+  (testing "moving in east direction"
+    (def east-robot-state {:row 1 :col 0 :direction "EAST"})
+    (is (= 
+         east-robot-state
+         (change-robot-position {:row 0 :col 0 :direction "EAST"} )))))
+
+(deftest move-robot-west-direction
+  (testing "moving in west direction"
+    (def west-robot-state {:row 3 :col 4 :direction "WEST"})
+    (is (= 
+         west-robot-state
+         (change-robot-position {:row 4 :col 4 :direction "WEST"} )))))
+
+(deftest move-robot-north-direction
+  (testing "moving in north direction"
+    (def north-robot-state {:row 0 :col 1 :direction "NORTH"})
+    (is (= 
+         north-robot-state
+         (change-robot-position {:row 0 :col 0 :direction "NORTH"} )))))
+
+(deftest move-robot-south-direction
+  (testing "moving in south direction"
+    (def south-robot-state {:row 4 :col 3 :direction "SOUTH"})
+    (is (= 
+         south-robot-state
+         (change-robot-position {:row 4 :col 4 :direction "SOUTH"} )))))
