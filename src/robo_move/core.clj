@@ -9,6 +9,9 @@
 
 (def valid-dirctions ["NORTH" "SOUTH" "EAST" "WEST"])
 
+;;;;
+;; TO-DO create boad programatically  
+;;;;
 (def board [
   {:row 0 :col 0} {:row 0 :col 1} {:row 0 :col 2} {:row 0 :col 3} {:row 0 :col 4}
   {:row 1 :col 0} {:row 1 :col 1} {:row 1 :col 2} {:row 1 :col 3} {:row 1 :col 4}
@@ -116,6 +119,10 @@
       (println row,col,direction)
       ))
   robot-state)
+;;;;
+;; Functions that determines rules of robot, board is 2 dimensional space
+;; Contract is robot can't be fall from edge
+;;;;
 
 
 (def board-dimensions {:rows 4 :cols 4})
@@ -154,6 +161,7 @@
 
 (defn can-robot-move?
   [robot-state]
+  "Can avoid false = condition but I prefer explicit condition in this case"
   (let [{row :row col :col direction :direction} robot-state]
     (if (or 
          (= false (west-corner-side-rule row direction)) 
@@ -181,6 +189,7 @@
     )))
 
 (defn move-robot
+  "Check the contract if robot can move and then get a new state of robot"
   [robot-state]
   (if (and 
        (is-robot-on-table? robot-state) 
