@@ -119,35 +119,35 @@
 
 
 (def board-dimensions {:rows 4 :cols 4})
-(def west-side-col 0)
-(def east-side-col (get board-dimensions :cols))
-(def south-side-row 0)
-(def north-side-row (get board-dimensions :rows))
-
-(defn west-corner-side-rule
-  [col direction]
-  (if (and (= col west-side-col) (= direction "SOUTH"))
-    false
-    true
-    ))
+(def south-side-col 0)
+(def east-side-row (get board-dimensions :rows))
+(def west-side-row 0)
+(def north-side-col (get board-dimensions :cols))
 
 (defn south-corner-side-rule
-  [row direction]
-  (if (and (= row south-side-row) (= direction "WEST"))
+  [col direction]
+  (if (and (= col south-side-col) (= direction "SOUTH"))
     false
     true
     ))
 
-(defn north-corner-side-rule
+(defn west-corner-side-rule
   [row direction]
-  (if (and (= row north-side-row) (= direction "EAST"))
+  (if (and (= row west-side-row) (= direction "WEST"))
     false
     true
     ))
 
 (defn east-corner-side-rule
+  [row direction]
+  (if (and (= row east-side-row) (= direction "EAST"))
+    false
+    true
+    ))
+
+(defn north-corner-side-rule
   [col direction]
-  (if (and (= col east-side-col) (= direction "NORTH"))
+  (if (and (= col north-side-col) (= direction "NORTH"))
     false
     true
     ))
@@ -156,10 +156,10 @@
   [robot-state]
   (let [{row :row col :col direction :direction} robot-state]
     (if (or 
-         (= false (west-corner-side-rule col direction)) 
-         (= false (south-corner-side-rule row direction)) 
-         (= false (north-corner-side-rule row direction)) 
-         (= false (east-corner-side-rule col direction)))
+         (= false (west-corner-side-rule row direction)) 
+         (= false (south-corner-side-rule col direction)) 
+         (= false (north-corner-side-rule col direction)) 
+         (= false (east-corner-side-rule row direction)))
       false
       true)))
 
