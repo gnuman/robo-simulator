@@ -116,7 +116,7 @@
   (let [{row :row col :col direction :direction} robot-state]
     (if (= -1 row)
       (println "Place robot first")
-      (println row,col,direction)
+      (println (str row "," col "," direction))
       ))
   robot-state)
 ;;;;
