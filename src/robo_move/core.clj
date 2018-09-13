@@ -225,6 +225,7 @@
     "MOVE" (move-robot robot-state)
     "LEFT" (change-direction-to-left robot-state)
     "RIGHT" (change-direction-to-right robot-state)
+    robot-state
     ))
 
 (defn valid-command-processing
