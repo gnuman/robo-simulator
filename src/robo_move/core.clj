@@ -243,4 +243,5 @@
 (defn -main
   "start of program"
   [& args]
+  (println "Press CTRL-C to exit")
   (start initial-robot-state))
