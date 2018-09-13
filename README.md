@@ -43,9 +43,9 @@
     
     To run tests
         
-        lein tests 
+        lein test
         
-    $ java -jar robo-move-0.1.0-standalone.jar [args]
+    $ java -jar robo-move-0.1.0-standalone.jar 
 
 
 ### Bugs
@@ -56,7 +56,7 @@
 
 ## License
 
-Copyright Anish Patil © 2018 FIXME
+Copyright  © 2018 FIXME
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
